@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +31,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.CancellationTokenSource;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -145,16 +150,21 @@ public class MainActivity extends AppCompatActivity {
         locationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.getToken())
                 .addOnSuccessListener(location -> {
                     if (location != null) {
-                        // Αποθηκεύουμε την τοποθεσία ως "Τρέχουσα Τοποθεσία"
+                        double lat = location.getLatitude();
+                        double lon = location.getLongitude();
+
+                        // Reverse geocoding: μετατρέπουμε συντεταγμένες σε όνομα πόλης
+                        String cityName = getCityNameFromCoordinates(lat, lon);
+
+                        // Αποθηκεύουμε την τοποθεσία με το πραγματικό όνομα πόλης
                         SharedPreferences.Editor editor =
                                 getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-                        editor.putString(PREF_CITY_NAME, "Τρέχουσα Τοποθεσία");
-                        editor.putFloat(PREF_CITY_LAT, (float) location.getLatitude());
-                        editor.putFloat(PREF_CITY_LON, (float) location.getLongitude());
+                        editor.putString(PREF_CITY_NAME, cityName);
+                        editor.putFloat(PREF_CITY_LAT, (float) lat);
+                        editor.putFloat(PREF_CITY_LON, (float) lon);
                         editor.apply();
 
-                        fetchWeather(location.getLatitude(), location.getLongitude(),
-                                "Τρέχουσα Τοποθεσία");
+                        fetchWeather(lat, lon, cityName);
                     } else {
                         Toast.makeText(this, "Δεν βρέθηκε τοποθεσία. Δοκιμάστε ξανά.",
                                 Toast.LENGTH_SHORT).show();
@@ -163,6 +173,31 @@ public class MainActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Σφάλμα τοποθεσίας: " + e.getMessage(),
                                 Toast.LENGTH_SHORT).show());
+    }
+
+    // Reverse geocoding: επιστρέφει το όνομα της πόλης από GPS συντεταγμένες
+    private String getCityNameFromCoordinates(double lat, double lon) {
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Προτεραιότητα: locality (πόλη) → subAdminArea (περιοχή) → adminArea (νομός) → countryName
+                if (address.getLocality() != null) {
+                    return address.getLocality();
+                } else if (address.getSubAdminArea() != null) {
+                    return address.getSubAdminArea();
+                } else if (address.getAdminArea() != null) {
+                    return address.getAdminArea();
+                } else if (address.getCountryName() != null) {
+                    return address.getCountryName();
+                }
+            }
+        } catch (IOException e) {
+            // Αν αποτύχει το geocoding, επιστρέφουμε fallback
+            e.printStackTrace();
+        }
+        return "Τρέχουσα Τοποθεσία";
     }
 
     // Καλεί το API του Open-Meteo για να πάρει δεδομένα καιρού
