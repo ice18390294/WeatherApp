@@ -40,6 +40,13 @@ import retrofit2.Response;
 
 public class CitySearchActivity extends AppCompatActivity {
 
+    private static final long LIST_ITEM_ANIMATION_DURATION_MS = 320L;
+    private static final long LIST_ITEM_STAGGER_MS = 70L;
+    private static final long SEARCH_TINT_ANIMATION_DURATION_MS = 260L;
+    private static final long SKY_ANIMATION_DURATION_MS = 15000L;
+    private static final long BUTTON_PRESS_DURATION_MS = 120L;
+    private static final long BUTTON_RELEASE_DURATION_MS = 260L;
+
     private static final GradientDrawable.Orientation[] SKY_ORIENTATIONS = {
             GradientDrawable.Orientation.TOP_BOTTOM,
             GradientDrawable.Orientation.LEFT_RIGHT,
@@ -98,8 +105,8 @@ public class CitySearchActivity extends AppCompatActivity {
                     view.animate()
                             .alpha(1f)
                             .translationY(0f)
-                            .setDuration(320L)
-                            .setStartDelay(position * 70L)
+                            .setDuration(LIST_ITEM_ANIMATION_DURATION_MS)
+                            .setStartDelay(position * LIST_ITEM_STAGGER_MS)
                             .setInterpolator(new OvershootInterpolator(0.9f))
                             .start();
                     lastAnimatedPosition = position;
@@ -169,7 +176,7 @@ public class CitySearchActivity extends AppCompatActivity {
         }
 
         searchTintAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), currentColor, targetColor);
-        searchTintAnimator.setDuration(260L);
+        searchTintAnimator.setDuration(SEARCH_TINT_ANIMATION_DURATION_MS);
         searchTintAnimator.addUpdateListener(animation ->
                 etCitySearch.setBackgroundTintList(
                         ColorStateList.valueOf((int) animation.getAnimatedValue())));
@@ -270,7 +277,7 @@ public class CitySearchActivity extends AppCompatActivity {
 
         ArgbEvaluator evaluator = new ArgbEvaluator();
         skyAnimator = ValueAnimator.ofFloat(0f, (float) phases.length);
-        skyAnimator.setDuration(15000L);
+        skyAnimator.setDuration(SKY_ANIMATION_DURATION_MS);
         skyAnimator.setRepeatCount(ValueAnimator.INFINITE);
         skyAnimator.setInterpolator(new LinearInterpolator());
         skyAnimator.addUpdateListener(animation -> {
@@ -300,7 +307,7 @@ public class CitySearchActivity extends AppCompatActivity {
                             .scaleX(0.93f)
                             .scaleY(0.93f)
                             .translationZ(dp(2))
-                            .setDuration(120L)
+                            .setDuration(BUTTON_PRESS_DURATION_MS)
                             .start();
                     break;
                 case MotionEvent.ACTION_UP:
@@ -309,7 +316,7 @@ public class CitySearchActivity extends AppCompatActivity {
                             .scaleX(1f)
                             .scaleY(1f)
                             .translationZ(dp(10))
-                            .setDuration(260L)
+                            .setDuration(BUTTON_RELEASE_DURATION_MS)
                             .setInterpolator(new OvershootInterpolator())
                             .start();
                     break;

@@ -67,6 +67,19 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST = 100;
     private static final int NOTIFICATION_PERMISSION_REQUEST = 101;
     private static final float MAX_CARD_TILT = 15f;
+    private static final long CARD_ENTRANCE_DURATION_MS = 500L;
+    private static final long CARD_FORECAST_DELAY_MS = 120L;
+    private static final long CITY_SLIDE_DURATION_MS = 450L;
+    private static final long CONDITION_FADE_DELAY_MS = 200L;
+    private static final long CONDITION_FADE_DURATION_MS = 320L;
+    private static final long TEMPERATURE_COUNT_DURATION_MS = 650L;
+    private static final long TEMPERATURE_GLOW_DURATION_MS = 2000L;
+    private static final long SKY_ANIMATION_DURATION_MS = 18000L;
+    private static final long FORECAST_STAGGER_STEP_MS = 80L;
+    private static final long FORECAST_ROW_DURATION_MS = 420L;
+    private static final long FORECAST_DIVIDER_DURATION_MS = 250L;
+    private static final long BUTTON_PRESS_DURATION_MS = 120L;
+    private static final long BUTTON_RELEASE_DURATION_MS = 260L;
 
     private static final GradientDrawable.Orientation[] SKY_ORIENTATIONS = {
             GradientDrawable.Orientation.TOP_BOTTOM,
@@ -301,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         animateCardEntrance(cardWeather, 0L);
-        animateCardEntrance(cardForecast, 120L);
+        animateCardEntrance(cardForecast, CARD_FORECAST_DELAY_MS);
         animateWeatherDetails(cityName, conditionText, current.temperature);
     }
 
@@ -333,8 +346,8 @@ public class MainActivity extends AppCompatActivity {
             tv.animate()
                     .translationX(0f)
                     .alpha(1f)
-                    .setDuration(420L)
-                    .setStartDelay(i * 80L)
+                    .setDuration(FORECAST_ROW_DURATION_MS)
+                    .setStartDelay(i * FORECAST_STAGGER_STEP_MS)
                     .setInterpolator(new OvershootInterpolator(0.9f))
                     .start();
 
@@ -347,8 +360,8 @@ public class MainActivity extends AppCompatActivity {
                 layoutForecast.addView(divider);
                 divider.animate()
                         .alpha(1f)
-                        .setDuration(250L)
-                        .setStartDelay(i * 80L + 120L)
+                        .setDuration(FORECAST_DIVIDER_DURATION_MS)
+                        .setStartDelay(i * FORECAST_STAGGER_STEP_MS + CARD_FORECAST_DELAY_MS)
                         .start();
             }
         }
@@ -407,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
                 .alpha(1f)
                 .scaleX(1f)
                 .scaleY(1f)
-                .setDuration(500L)
+                .setDuration(CARD_ENTRANCE_DURATION_MS)
                 .setStartDelay(delay)
                 .setInterpolator(new OvershootInterpolator(1.1f))
                 .start();
@@ -420,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
         tvCityName.animate()
                 .alpha(1f)
                 .translationX(0f)
-                .setDuration(450L)
+                .setDuration(CITY_SLIDE_DURATION_MS)
                 .setInterpolator(new OvershootInterpolator(1.05f))
                 .start();
 
@@ -428,14 +441,14 @@ public class MainActivity extends AppCompatActivity {
         tvCondition.setAlpha(0f);
         tvCondition.animate()
                 .alpha(1f)
-                .setDuration(320L)
-                .setStartDelay(200L)
+                .setDuration(CONDITION_FADE_DURATION_MS)
+                .setStartDelay(CONDITION_FADE_DELAY_MS)
                 .start();
 
         int targetTemperature = (int) Math.round(temperature);
         int animationTarget = Math.abs(targetTemperature);
         ValueAnimator counterAnimator = ValueAnimator.ofInt(0, animationTarget);
-        counterAnimator.setDuration(650L);
+        counterAnimator.setDuration(TEMPERATURE_COUNT_DURATION_MS);
         counterAnimator.setInterpolator(new OvershootInterpolator(0.7f));
         counterAnimator.addUpdateListener(animation -> {
             int animatedValue = (int) animation.getAnimatedValue();
@@ -453,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(this, R.color.white),
                 ContextCompat.getColor(this, R.color.glow_yellow)
         );
-        temperatureGlowAnimator.setDuration(2000L);
+        temperatureGlowAnimator.setDuration(TEMPERATURE_GLOW_DURATION_MS);
         temperatureGlowAnimator.setRepeatMode(ValueAnimator.REVERSE);
         temperatureGlowAnimator.setRepeatCount(ValueAnimator.INFINITE);
         temperatureGlowAnimator.addUpdateListener(animation ->
@@ -497,7 +510,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         skyAnimator = ValueAnimator.ofFloat(0f, (float) phases.length);
-        skyAnimator.setDuration(18000L);
+        skyAnimator.setDuration(SKY_ANIMATION_DURATION_MS);
         skyAnimator.setRepeatCount(ValueAnimator.INFINITE);
         skyAnimator.setInterpolator(new LinearInterpolator());
         ArgbEvaluator evaluator = new ArgbEvaluator();
@@ -570,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
                             .scaleX(0.93f)
                             .scaleY(0.93f)
                             .translationZ(dp(2))
-                            .setDuration(120L)
+                            .setDuration(BUTTON_PRESS_DURATION_MS)
                             .start();
                     break;
                 case MotionEvent.ACTION_UP:
@@ -579,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
                             .scaleX(1f)
                             .scaleY(1f)
                             .translationZ(dp(12))
-                            .setDuration(260L)
+                            .setDuration(BUTTON_RELEASE_DURATION_MS)
                             .setInterpolator(new OvershootInterpolator())
                             .start();
                     break;

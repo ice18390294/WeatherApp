@@ -20,6 +20,7 @@ import java.util.Random;
 
 public class WeatherParticleView extends View {
 
+    private static final long ANIMATION_CYCLE_DURATION_MS = 1200L;
     private static final int PARTICLE_COUNT = 48;
 
     private final Random random = new Random();
@@ -154,7 +155,7 @@ public class WeatherParticleView extends View {
     private void startAnimator() {
         lastFrameTimeNs = 0L;
         animator = ValueAnimator.ofFloat(0f, 1f);
-        animator.setDuration(1200L);
+        animator.setDuration(ANIMATION_CYCLE_DURATION_MS);
         animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.setInterpolator(new LinearInterpolator());
         animator.addUpdateListener(animation -> {
