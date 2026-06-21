@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WeatherApp 🌤️</string>
+    <string name="search_city_title">Αναζήτηση Πόλης</string>
+    <string name="search_city_hint">π.χ. Αθήνα, London, Paris...</string>
+    <string name="search_city_button">Αναζήτηση</string>
+    <string name="back_button">←</string>
 </resources>

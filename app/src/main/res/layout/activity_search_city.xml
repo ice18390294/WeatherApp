@@ -1,46 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootSearch"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Πεδίο αναζήτησης + κουμπί -->
-    <LinearLayout
+    <View
+        android:id="@+id/viewAnimatedBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent" />
 
-        <EditText
-            android:id="@+id/etCitySearch"
-            android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/layoutSearchContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBack"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/back_button"
+                android:textSize="20sp"
+                app:backgroundTint="@color/card_glass"
+                app:cornerRadius="28dp"
+                app:rippleColor="@color/glow_yellow" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:text="@string/search_city_title"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etCitySearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/light_blue"
+                android:hint="@string/search_city_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/light_blue" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSearch"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_city_button"
+                app:backgroundTint="@color/card_glass"
+                app:rippleColor="@color/glow_yellow" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lvResults"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="π.χ. Αθήνα, London, Paris..."
-            android:inputType="text"
-            android:textColor="@color/white"
-            android:textColorHint="@color/light_blue"
-            android:backgroundTint="@color/light_blue"
-            android:imeOptions="actionSearch"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Αναζήτηση" />
+            android:clipToPadding="false"
+            android:divider="@color/divider"
+            android:dividerHeight="1dp"
+            android:paddingBottom="24dp" />
 
     </LinearLayout>
-
-    <!-- Λίστα αποτελεσμάτων -->
-    <ListView
-        android:id="@+id/lvResults"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:dividerHeight="1dp"
-        android:divider="@color/divider" />
-
-</LinearLayout>
+</FrameLayout>
