@@ -293,8 +293,6 @@ public class MainActivity extends AppCompatActivity {
         String conditionText = WeatherUtils.getWeatherEmoji(current.weathercode)
                 + "  " + conditionDescription;
 
-        tvCityName.setText(cityName);
-        tvCondition.setText(conditionText);
         tvWind.setText(String.format(Locale.getDefault(), "💨  Άνεμος: %.0f km/h", current.windspeed));
         weatherParticleView.setWeatherCondition(conditionDescription);
 
@@ -434,12 +432,18 @@ public class MainActivity extends AppCompatActivity {
                 .setStartDelay(200L)
                 .start();
 
-        ValueAnimator counterAnimator = ValueAnimator.ofInt(0, (int) Math.round(temperature));
+        int targetTemperature = (int) Math.round(temperature);
+        int animationTarget = Math.abs(targetTemperature);
+        ValueAnimator counterAnimator = ValueAnimator.ofInt(0, animationTarget);
         counterAnimator.setDuration(650L);
         counterAnimator.setInterpolator(new OvershootInterpolator(0.7f));
-        counterAnimator.addUpdateListener(animation ->
-                tvTemperature.setText(String.format(Locale.getDefault(), "%d°C",
-                        (int) animation.getAnimatedValue())));
+        counterAnimator.addUpdateListener(animation -> {
+            int animatedValue = (int) animation.getAnimatedValue();
+            if (targetTemperature < 0) {
+                animatedValue = -animatedValue;
+            }
+            tvTemperature.setText(String.format(Locale.getDefault(), "%d°C", animatedValue));
+        });
         counterAnimator.start();
     }
 
