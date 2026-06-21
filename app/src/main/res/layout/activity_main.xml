@@ -1,167 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootMain"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <View
+        android:id="@+id/viewAnimatedBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent" />
 
-        <!-- Τίτλος εφαρμογής -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp" />
+    <com.example.weatherapp.ui.WeatherParticleView
+        android:id="@+id/weatherParticleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false" />
 
-        <!-- Εμφανίζεται όταν ΔΕΝ έχει επιλεγεί πόλη -->
+    <ScrollView
+        android:id="@+id/scrollMainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
         <LinearLayout
-            android:id="@+id/layoutNoCity"
+            android:id="@+id/layoutMainContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
-            android:padding="32dp"
-            android:visibility="visible">
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="🌍\n\nΔεν έχει επιλεγεί πόλη.\nΑναζητήστε μια πόλη ή χρησιμοποιήστε\nτην τρέχουσα τοποθεσία σας."
-                android:textSize="16sp"
-                android:textColor="@color/white"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
                 android:gravity="center"
-                android:lineSpacingExtra="4dp"
-                android:layout_marginBottom="8dp" />
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/layoutNoCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="4dp"
+                    android:text="🌍\n\nΔεν έχει επιλεγεί πόλη.\nΑναζητήστε μια πόλη ή χρησιμοποιήστε\nτην τρέχουσα τοποθεσία σας."
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardWeather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/card_glass"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="16dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#14FFFFFF"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/tvCityName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="Athens, Greece" />
+
+                    <TextView
+                        android:id="@+id/tvTemperature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@color/white"
+                        android:textSize="80sp"
+                        android:textStyle="bold"
+                        tools:text="26°C" />
+
+                    <TextView
+                        android:id="@+id/tvCondition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:textColor="@color/light_blue"
+                        android:textSize="20sp"
+                        tools:text="☀️  Clear sky" />
+
+                    <TextView
+                        android:id="@+id/tvWind"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_blue"
+                        android:textSize="16sp"
+                        tools:text="💨  Άνεμος: 15 km/h" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardForecast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/card_glass"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="16dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#10FFFFFF"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="📅  Πρόγνωση 5 ημερών"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutForecast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSearchCity"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="🔍  Αναζήτηση Πόλης"
+                android:textSize="16sp"
+                app:backgroundTint="@color/card_glass"
+                app:rippleColor="@color/glow_yellow" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUseLocation"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="📍  Τρέχουσα Τοποθεσία"
+                android:textSize="16sp"
+                app:backgroundTint="@color/card_glass"
+                app:rippleColor="@color/glow_yellow" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRefresh"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔄  Ανανέωση"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:backgroundTint="@color/card_glass"
+                app:rippleColor="@color/glow_yellow" />
 
         </LinearLayout>
-
-        <!-- Κάρτα τρέχοντος καιρού (κρυμμένη αρχικά) -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardWeather"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:visibility="gone"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/card_background"
-            app:cardElevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-                <!-- Όνομα πόλης -->
-                <TextView
-                    android:id="@+id/tvCityName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="4dp" />
-
-                <!-- Θερμοκρασία -->
-                <TextView
-                    android:id="@+id/tvTemperature"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="80sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="4dp" />
-
-                <!-- Κατάσταση καιρού -->
-                <TextView
-                    android:id="@+id/tvCondition"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textColor="@color/light_blue"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Άνεμος -->
-                <TextView
-                    android:id="@+id/tvWind"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/light_blue" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Κάρτα πρόγνωσης 5 ημερών (κρυμμένη αρχικά) -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardForecast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:visibility="gone"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/card_background"
-            app:cardElevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="📅  Πρόγνωση 5 ημερών"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Γεμίζει δυναμικά από Java -->
-                <LinearLayout
-                    android:id="@+id/layoutForecast"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Κουμπιά ενεργειών -->
-        <Button
-            android:id="@+id/btnSearchCity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="🔍  Αναζήτηση Πόλης"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/btnUseLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📍  Τρέχουσα Τοποθεσία"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/btnRefresh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="🔄  Ανανέωση"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</FrameLayout>

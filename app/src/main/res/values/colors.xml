@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Κύριο χρώμα φόντου (σκούρο μπλε) -->
-    <color name="background">#0D47A1</color>
+    <!-- Κύριο χρώμα φόντου -->
+    <color name="background">#0A0E2A</color>
+    <color name="background_start">#0A0E2A</color>
+    <color name="background_mid">#1A237E</color>
+    <color name="background_end">#0D47A1</color>
 
     <!-- Χρώμα καρτών -->
-    <color name="card_background">#1565C0</color>
+    <color name="card_background">#CC1565C0</color>
+    <color name="card_glass">#CC1565C0</color>
 
     <!-- Βασικά χρώματα -->
     <color name="white">#FFFFFF</color>
     <color name="light_blue">#90CAF9</color>
     <color name="accent">#FFC107</color>
+    <color name="glow_yellow">#FFC107</color>
     <color name="divider">#1976D2</color>
+    <color name="particle_rain">#90CAF9</color>
+    <color name="particle_snow">#E3F2FD</color>
+    <color name="particle_sun">#FFF9C4</color>
+    <color name="particle_cloud">#B0BEC5</color>
 
     <!-- Χρώματα για το Material Theme -->
     <color name="colorPrimary">#1565C0</color>
-    <color name="colorPrimaryDark">#0D47A1</color>
+    <color name="colorPrimaryDark">#0A0E2A</color>
     <color name="colorAccent">#FFC107</color>
 </resources>
