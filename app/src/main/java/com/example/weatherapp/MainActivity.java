@@ -537,6 +537,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupWeatherCardTilt() {
         cardWeather.setCameraDistance(24000f);
+        cardWeather.setClickable(true);
         SpringAnimation rotationXSpring = buildCardSpring(cardWeather, DynamicAnimation.ROTATION_X);
         SpringAnimation rotationYSpring = buildCardSpring(cardWeather, DynamicAnimation.ROTATION_Y);
 
@@ -547,10 +548,10 @@ public class MainActivity extends AppCompatActivity {
                     view.getParent().requestDisallowInterceptTouchEvent(true);
                     float centerX = view.getWidth() / 2f;
                     float centerY = view.getHeight() / 2f;
-                    float offsetX = (event.getX() - centerX) / Math.max(centerX, 1f);
-                    float offsetY = (event.getY() - centerY) / Math.max(centerY, 1f);
-                    view.setRotationY(clamp(offsetX * MAX_CARD_TILT, -MAX_CARD_TILT, MAX_CARD_TILT));
-                    view.setRotationX(clamp(-offsetY * MAX_CARD_TILT, -MAX_CARD_TILT, MAX_CARD_TILT));
+                    float offsetX = clamp((event.getX() - centerX) / Math.max(centerX, 1f), -1f, 1f);
+                    float offsetY = clamp((event.getY() - centerY) / Math.max(centerY, 1f), -1f, 1f);
+                    view.setRotationY(offsetX * MAX_CARD_TILT);
+                    view.setRotationX(-offsetY * MAX_CARD_TILT);
                     return true;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:

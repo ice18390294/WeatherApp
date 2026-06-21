@@ -21,6 +21,7 @@ import java.util.Random;
 public class WeatherParticleView extends View {
 
     private static final long ANIMATION_CYCLE_DURATION_MS = 1200L;
+    private static final int CLOUD_PARTICLE_COUNT = 24;
     private static final int PARTICLE_COUNT = 48;
 
     private final Random random = new Random();
@@ -135,11 +136,8 @@ public class WeatherParticleView extends View {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (animator == null) {
+        if (animator == null || !animator.isRunning()) {
             startAnimator();
-        } else if (!animator.isRunning()) {
-            lastFrameTimeNs = 0L;
-            animator.start();
         }
     }
 
@@ -153,6 +151,9 @@ public class WeatherParticleView extends View {
     }
 
     private void startAnimator() {
+        if (animator != null) {
+            animator.cancel();
+        }
         lastFrameTimeNs = 0L;
         animator = ValueAnimator.ofFloat(0f, 1f);
         animator.setDuration(ANIMATION_CYCLE_DURATION_MS);
@@ -177,7 +178,7 @@ public class WeatherParticleView extends View {
             return;
         }
 
-        int count = mode == Mode.CLOUDS ? 24 : PARTICLE_COUNT;
+        int count = mode == Mode.CLOUDS ? CLOUD_PARTICLE_COUNT : PARTICLE_COUNT;
         for (int i = 0; i < count; i++) {
             particles.add(createParticle(width, height));
         }

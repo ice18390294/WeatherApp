@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.inputmethod.EditorInfo;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -119,7 +120,12 @@ public class CitySearchActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
         btnSearch.setOnClickListener(v -> searchCity());
         etCitySearch.setOnEditorActionListener((textView, actionId, keyEvent) -> {
-            if (actionId != 0 || (keyEvent != null && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+            boolean isSearchAction = actionId == EditorInfo.IME_ACTION_SEARCH
+                    || actionId == EditorInfo.IME_ACTION_DONE;
+            boolean isEnterKey = keyEvent != null
+                    && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER
+                    && keyEvent.getAction() == KeyEvent.ACTION_DOWN;
+            if (isSearchAction || isEnterKey) {
                 searchCity();
                 return true;
             }
