@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationChannelCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         ScrollView scrollView = findViewById(R.id.scrollMainContent);
         ViewCompat.setOnApplyWindowInsetsListener(scrollView, (view, insets) -> {
-            android.graphics.Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars()).toPlatformInsets();
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             view.setPadding(
                     view.getPaddingLeft(),
                     systemBars.top + dp(8),

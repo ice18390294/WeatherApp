@@ -26,6 +26,7 @@ public class WeatherParticleView extends View {
     private final Paint rainPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint snowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint sunPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint sparklePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint cloudPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final List<Particle> particles = new ArrayList<>();
 
@@ -64,6 +65,9 @@ public class WeatherParticleView extends View {
         sunPaint.setStrokeCap(Paint.Cap.ROUND);
         sunPaint.setStrokeWidth(3f);
         sunPaint.setColor(sunColor);
+
+        sparklePaint.setStyle(Paint.Style.FILL);
+        sparklePaint.setColor(sunColor);
 
         cloudPaint.setStyle(Paint.Style.FILL);
         cloudPaint.setColor(cloudColor);
@@ -132,7 +136,8 @@ public class WeatherParticleView extends View {
         super.onAttachedToWindow();
         if (animator == null) {
             startAnimator();
-        } else if (!animator.isStarted()) {
+        } else if (!animator.isRunning()) {
+            lastFrameTimeNs = 0L;
             animator.start();
         }
     }
@@ -142,10 +147,12 @@ public class WeatherParticleView extends View {
         if (animator != null) {
             animator.cancel();
         }
+        lastFrameTimeNs = 0L;
         super.onDetachedFromWindow();
     }
 
     private void startAnimator() {
+        lastFrameTimeNs = 0L;
         animator = ValueAnimator.ofFloat(0f, 1f);
         animator.setDuration(1200L);
         animator.setRepeatCount(ValueAnimator.INFINITE);
@@ -236,6 +243,7 @@ public class WeatherParticleView extends View {
     }
 
     private void drawSnow(Canvas canvas, Particle particle) {
+        snowPaint.setColor(snowColor);
         snowPaint.setAlpha((int) (255 * particle.alpha));
         canvas.drawCircle(particle.x, particle.y, particle.size * 0.3f, snowPaint);
     }
@@ -246,13 +254,8 @@ public class WeatherParticleView extends View {
         float radius = particle.size * 0.4f;
         canvas.drawLine(particle.x - radius, particle.y, particle.x + radius, particle.y, sunPaint);
         canvas.drawLine(particle.x, particle.y - radius, particle.x, particle.y + radius, sunPaint);
-        canvas.drawCircle(particle.x, particle.y, radius * 0.3f, snowPaintForSparkle((int) (255 * twinkle)));
-    }
-
-    private Paint snowPaintForSparkle(int alpha) {
-        snowPaint.setColor(sunColor);
-        snowPaint.setAlpha(alpha);
-        return snowPaint;
+        sparklePaint.setAlpha((int) (255 * twinkle));
+        canvas.drawCircle(particle.x, particle.y, radius * 0.3f, sparklePaint);
     }
 
     private void drawCloud(Canvas canvas, Particle particle) {
